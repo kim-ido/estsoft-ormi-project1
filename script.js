@@ -2,9 +2,11 @@ const chatInput = document.querySelector("#chat-input");
 const sendButton = document.querySelector("#send-btn");
 const chatContainer = document.querySelector(".chat-container");
 const themeButton = document.querySelector("#theme-btn");
+const deleteButton = document.querySelector("#delete-btn");
 
 let userText = null;
 const API_KEY = "";
+const initialHeight = chatInput.scrollHeight;
 
 const loadDataFromLocalstorage = () => {
     const themeColor = localStorage.getItem("theme-color");
@@ -12,7 +14,12 @@ const loadDataFromLocalstorage = () => {
     document.body.classList.toggle("light-mode", themeColor === "light-mode");
     themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
 
-    chatContainer.innerHTML = localStorage.getItem("all-chats");
+    const defaultText = `<div class="default-text">
+                            <h1>test</h1>
+                            <p>test</p>
+                        </div>`;
+
+    chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
 }
 
@@ -49,7 +56,8 @@ const getChatResponse = async (incomingChatDiv) => {
         const response = await(await fetch(API_URL, requestOptions)).json();
         pElement.textContent = response.choices[0].text.trim();
     } catch(error) {
-        console.log(error);
+        pElement.classList.add("error");
+        pElement.textContent = "이런, 뭔가 잘못됐어요! 다시 시도해 주세요.";
     }
 
     incomingChatDiv.querySelector(".typing-animation").remove();
@@ -88,6 +96,9 @@ const handleOutgoingChat = () => {
     userText = chatInput.value.trim();
     if(!userText) return;
 
+    chatInput.value = "";
+    chatInput.style.height = `${initialHeight}px`;
+
     const html = `<div class="chat-content">
                     <div class="chat-details">
                         <img src="images/user.png" alt="user-img" width="90px" height="90px">
@@ -97,6 +108,7 @@ const handleOutgoingChat = () => {
 
     const outgoingChatDiv = createElement(html, "outgoing");
     outgoingChatDiv.querySelector("p").textContent = userText;
+    document.querySelector(".default-text")?.remove();
     chatContainer.appendChild(outgoingChatDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     setTimeout(showTypingAnimation, 500);
@@ -108,4 +120,23 @@ themeButton.addEventListener("click", () => {
     themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
 });
 
-sendButton.addEventListener("click", handleOutgoingChat)
+deleteButton.addEventListener("click", () => {
+    if(confirm("정말 모든 대화를 삭제하시겠습니까?")) {
+        localStorage.removeItem("all-chats");
+        loadDataFromLocalstorage();
+    }
+});
+
+chatInput.addEventListener("input", () => {
+    chatInput.style.height = `${initialHeight}px`;
+    chatInput.style.height = `${chatInput.scrollHeight}px`;
+});
+
+chatInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
+        e.preventDefault();
+        handleOutgoingChat();
+    }
+});
+
+sendButton.addEventListener("click", handleOutgoingChat);
