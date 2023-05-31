@@ -1,27 +1,59 @@
+const chatContainer = document.querySelector(".chat-container");
 const chatInput = document.querySelector("#chat-input");
 const sendButton = document.querySelector("#send-btn");
-const chatContainer = document.querySelector(".chat-container");
 const themeButton = document.querySelector("#theme-btn");
 const deleteButton = document.querySelector("#delete-btn");
 
-let userText = null;
-const API_KEY = "";
 const initialHeight = chatInput.scrollHeight;
+
+let apiUrl = `https://estsoft-openai-api.jejucodingcamp.workers.dev/`;
+let userText = null;
+let data = [
+    {
+        role: "system",
+        content: "assistant는 친절한 답변가이다.",
+    },
+];
+
+const getChatResponse = async (incomingChatDiv) => {
+    const pElement = document.createElement("p");
+    const result = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        redirect: "follow",
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            pElement.textContent = res.choices[0].message.content;
+        })
+        .catch((err) => {
+            pElement.classList.add("error");
+            pElement.textContent = "이런, 뭔가 잘못됐어요! 다시 시도해 주세요.";
+        });
+
+    incomingChatDiv.querySelector(".typing-animation").remove();
+    incomingChatDiv.querySelector(".chat-details").appendChild(pElement);
+    chatContainer.scrollTo(0, chatContainer.scrollHeight);
+    localStorage.setItem("all-chats", chatContainer.innerHTML);
+};
 
 const loadDataFromLocalstorage = () => {
     const themeColor = localStorage.getItem("theme-color");
 
-    document.body.classList.toggle("light-mode", themeColor === "light-mode");
-    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+    document.body.classList.toggle("dark-mode", themeColor === "dark-mode");
+    themeButton.innerText = document.body.classList.contains("dark-mode") ? "light_mode" : "dark_mode";
 
     const defaultText = `<div class="default-text">
-                            <h1>ChatGPT</h1>
-                            <p>무엇이든 물어보세요.</p>
+                            <h1>MumulBot</h1>
+                            <p>무엇이든 물어보세요!</p>
                         </div>`;
 
     chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
-}
+};
 
 loadDataFromLocalstorage();
 
@@ -30,48 +62,14 @@ const createElement = (html, className) => {
     chatDiv.classList.add("chat", className);
     chatDiv.innerHTML = html;
     return chatDiv;
-}
-
-const getChatResponse = async (incomingChatDiv) => {
-    const API_URL = "https://estsoft-openai-api.jejucodingcamp.workers.dev/";
-    const pElement = document.createElement("p");
-
-    const requestOptions = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${API_KEY}`
-        },
-        body: JSON.stringify({
-            model: "text-davinci-003",
-            prompt: userText,
-            max_tokens: 2048,
-            temperature: 0.2,
-            n: 1,
-            stop: null
-        })
-    }
-
-    try {
-        const response = await(await fetch(API_URL, requestOptions)).json();
-        pElement.textContent = response.choices[0].text.trim();
-    } catch(error) {
-        pElement.classList.add("error");
-        pElement.textContent = "이런, 뭔가 잘못됐어요! 다시 시도해 주세요.";
-    }
-
-    incomingChatDiv.querySelector(".typing-animation").remove();
-    incomingChatDiv.querySelector(".chat-details").appendChild(pElement);
-    chatContainer.scrollTo(0, chatContainer.scrollHeight);
-    localStorage.setItem("all-chats", chatContainer.innerHTML);
-}
+};
 
 const copyResponse = (copyBtn) => {
     const responseTextElement = copyBtn.parentElement.querySelector("p");
     navigator.clipboard.writeText(responseTextElement.textContent);
     copyBtn.textContent = "done";
     setTimeout(() => copyBtn.textContent = "content_copy", 1000);
-}
+};
 
 const showTypingAnimation = () => {
     const html = `<div class="chat-content">
@@ -90,7 +88,7 @@ const showTypingAnimation = () => {
     chatContainer.appendChild(incomingChatDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     getChatResponse(incomingChatDiv);
-}
+};
 
 const handleOutgoingChat = () => {
     userText = chatInput.value.trim();
@@ -112,12 +110,12 @@ const handleOutgoingChat = () => {
     chatContainer.appendChild(outgoingChatDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
     setTimeout(showTypingAnimation, 500);
-}
+};
 
 themeButton.addEventListener("click", () => {
-    document.body.classList.toggle("light-mode");
+    document.body.classList.toggle("dark-mode");
     localStorage.setItem("theme-color", themeButton.innerText);
-    themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
+    themeButton.innerText = document.body.classList.contains("dark-mode") ? "light_mode" : "dark_mode";
 });
 
 deleteButton.addEventListener("click", () => {

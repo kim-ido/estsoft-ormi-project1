@@ -7,6 +7,16 @@
     font-family: "Poppins", sans-serif;
 }
 :root {
+    --text-color: #588a5d;
+    --icon-color: #a4c195;
+    --icon-hover-bg: #f1f1f3;
+    --placeholder-color: #77a361;
+    --outgoing-chat-bg: #f8faf7;
+    --incoming-chat-bg: #f7faf2;
+    --outgoing-chat-border: #ffffff;
+    --incoming-chat-border: #d9d9e3;
+}
+.dark-mode {
     --text-color: #ffffff;
     --icon-color: #acacbe;
     --icon-hover-bg: #5b5e71;
@@ -15,16 +25,6 @@
     --incoming-chat-bg: #444654;
     --outgoing-chat-border: #343541;
     --incoming-chat-border: #444654;
-}
-.light-mode {
-    --text-color: #343531;
-    --icon-color: #a9a9bc;
-    --icon-hover-bg: #f1f1f3;
-    --placeholder-color: #9f9f9f;
-    --outgoing-chat-bg: #ffffff;
-    --incoming-chat-bg: #f7f7f8;
-    --outgoing-chat-border: #ffffff;
-    --incoming-chat-border: #d9d9e3;
 }
 body {
     background: var(--outgoing-chat-bg);
@@ -53,14 +53,14 @@ body {
     margin-top: 10px;
     font-size: 1.1rem;
 }
-:where(.chat-container, textarea)::-webkit-scrollbar {
+:where(.chat-container, input)::-webkit-scrollbar {
     width: 6px;
 }
-:where(.chat-container, textarea)::-webkit-scrollbar-track {
+:where(.chat-container, input)::-webkit-scrollbar-track {
     background: var(--incoming-chat-bg);
     border-radius: 25px;
 }
-:where(.chat-container, textarea)::-webkit-scrollbar-thumb {
+:where(.chat-container, input)::-webkit-scrollbar-thumb {
     background: var(--icon-color);
     border-radius: 25px;
 }
@@ -164,7 +164,7 @@ span.material-symbols-rounded {
     display: flex;
     position: relative;
 }
-.typing-textarea textarea {
+.typing-textarea input {
     width: 100%;
     height: 55px;
     border: none;
@@ -178,7 +178,7 @@ span.material-symbols-rounded {
     background: var(--incoming-chat-bg);
     outline: 1px solid var(--incoming-chat-border);
 }
-.typing-textarea textarea::placeholder {
+.typing-textarea input::placeholder {
     color: var(--placeholder-color);
 }
 .typing-textarea span {
@@ -187,7 +187,7 @@ span.material-symbols-rounded {
     bottom: 0;
     visibility: hidden;
 }
-.typing-textarea textarea:valid ~ span {
+.typing-textarea input:valid ~ span {
     visibility: visible;
 }
 .typing-content span {
