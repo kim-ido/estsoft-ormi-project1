@@ -15,8 +15,8 @@ const loadDataFromLocalstorage = () => {
     themeButton.innerText = document.body.classList.contains("light-mode") ? "dark_mode" : "light_mode";
 
     const defaultText = `<div class="default-text">
-                            <h1>test</h1>
-                            <p>test</p>
+                            <h1>ChatGPT</h1>
+                            <p>무엇이든 물어보세요.</p>
                         </div>`;
 
     chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
@@ -76,7 +76,7 @@ const copyResponse = (copyBtn) => {
 const showTypingAnimation = () => {
     const html = `<div class="chat-content">
                     <div class="chat-details">
-                        <img src="images/chatbot.jpg" alt="chatbot-img">
+                        <img src="images/chatbot.png" alt="chatbot-img width="90px" height="90px">
                         <div class="typing-animation">
                             <div class="typing-dot" style="--delay: 0.2s"></div>
                             <div class="typing-dot" style="--delay: 0.3s"></div>
