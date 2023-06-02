@@ -1,4 +1,4 @@
-import {data} from "./data.js";
+import { data } from "./data.js";
 
 const chatContainer = document.querySelector(".chat-container");
 const chatInput = document.querySelector("#chat-input");
@@ -58,29 +58,6 @@ const getChatResponse = async (incomingChatDiv) => {
     localStorage.setItem("all-chats", chatContainer.innerHTML);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
 };
-// const getChatResponse = async (incomingChatDiv) => {
-//     const pElement = document.createElement("p");
-//     const result = await fetch(apiUrl, {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify(data),
-//     })
-//         .then((response) => response.json())
-//         .then((response) => {
-//             pElement.textContent = response.choices[0].message.content;
-//         })
-//         .catch((err) => {
-//             pElement.classList.add("error");
-//             pElement.textContent = "이런, 뭔가 잘못됐어요! 다시 시도해 주세요.";
-//         });
-
-//     incomingChatDiv.querySelector(".typing-animation").remove();
-//     incomingChatDiv.querySelector(".chat-details").appendChild(pElement);
-//     localStorage.setItem("all-chats", chatContainer.innerHTML);
-//     chatContainer.scrollTo(0, chatContainer.scrollHeight);
-// };
 
 const copyResponse = (copyBtn) => {
     const responseTextElement = copyBtn.parentElement.querySelector("p");
@@ -123,7 +100,6 @@ const handleOutgoingChat = () => {
                 </div>`;
 
     const outgoingChatDiv = createChatElement(html, "outgoing");
-    // outgoingChatDiv.querySelector("p").textContent = userText;
     chatContainer.querySelector(".default-text")?.remove();
     chatContainer.appendChild(outgoingChatDiv);
     chatContainer.scrollTo(0, chatContainer.scrollHeight);
