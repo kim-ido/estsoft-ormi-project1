@@ -208,3 +208,6 @@ span.material-symbols-rounded {
     background: var(--incoming-chat-bg);
     border: 1px solid var(--incoming-chat-border);
 }
+.typing-controls span:hover {
+    background: var(--icon-hover-bg);
+}
