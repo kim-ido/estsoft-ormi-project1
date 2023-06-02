@@ -15,10 +15,10 @@ const loadDataFromLocalstorage = () => {
     themeButton.innerText = document.body.classList.contains("dark-mode") ? "light_mode" : "dark_mode";
 
     const defaultText = `<div class="default-text">
+                            <p><strong>나만의 블록체인 전문가</strong></p>
                             <h1>IDOREUM</h1>
-                            <h2>Chatbot</h2>
-                            <p><strong>이더리움에 대해 무엇이든 물어보세요!</strong></p><br/>
-                            <p>ex) 이더리움과 비트코인의 차이점을 알려줘</p>
+                            <h2>Chatbot</h2><br/>
+                            <p>ex) 스마트 컨트랙트에 대해 알려줘</p>
                         </div>`;
 
     chatContainer.innerHTML = localStorage.getItem("all-chats") || defaultText;
@@ -92,7 +92,7 @@ const copyResponse = (copyBtn) => {
 const showTypingAnimation = () => {
     const html = `<div class="chat-content">
                     <div class="chat-details">
-                        <img src="images/chatbot.png" alt="chatbot-img width="90px" height="90px">
+                        <img src="./assets/images/chatbot.png" alt="chatbot-img width="90px" height="90px">
                         <div class="typing-animation">
                             <div class="typing-dot" style="--delay: 0.2s"></div>
                             <div class="typing-dot" style="--delay: 0.3s"></div>
@@ -117,7 +117,7 @@ const handleOutgoingChat = () => {
 
     const html = `<div class="chat-content">
                     <div class="chat-details">
-                        <img src="images/user.png" alt="user-img" width="90px" height="90px">
+                        <img src="./assets/images/user.png" alt="user-img" width="90px" height="90px">
                         <p>${userText}</p>
                     </div>
                 </div>`;

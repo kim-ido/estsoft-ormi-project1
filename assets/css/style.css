@@ -211,3 +211,41 @@ span.material-symbols-rounded {
 .typing-controls span:hover {
     background: var(--icon-hover-bg);
 }
+
+/* Reponsive Media Query */
+@media screen and (max-width: 600px) {
+    .default-text h1 {
+        font-size: 2.3rem;
+    }
+    :where(.default-text p, textarea, .chat p) {
+        font-size: 0.95rem!important;
+    }
+    .chat-container .chat {
+        padding: 20px 10px;
+    }
+    .chat-container .chat img {
+        height: 32px;
+        width: 32px;
+    }
+    .chat-container .chat p {
+        padding: 0 20px;
+    }
+    .chat .chat-content:not(:has(.typing-animation), :has(.error)) span {
+        visibility: visible;
+    }
+    .typing-container {
+        padding: 15px 10px;
+    }
+    .typing-textarea textarea {
+        height: 45px;
+        padding: 10px 40px 10px 10px;
+    }
+    .typing-content span {
+        height: 45px;
+        width: 45px;
+        margin-left: 5px;
+    }
+    span.material-symbols-rounded {
+        font-size: 1.25rem!important;
+    }
+}
